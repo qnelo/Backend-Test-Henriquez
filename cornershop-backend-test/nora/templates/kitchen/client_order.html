@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" />
+    <title>List of {{order.menu.date | date:"M D d"}} meal plates</title>
+</head>
+
+<body>
+    <div class="container">
+        <h4>{{order.client.name}} your menu for today</h4>
+        If you want to complete the order, choose a dish from the list and select "Place order".
+        <br>Then press "send order".
+        <form method="post" action=".">
+            {%csrf_token%}
+            <table class="table table-bordered" cellpadding="5" cellspacing="3">
+                {{order_form.as_table}}
+                <tr>
+                    <td colspan="2">
+                        <button class="btn btn-primary">Send order</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        {% if order_form.errors %}
+        {% for field in order_form %}
+        {% for error in field.errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+        {% endfor %}
+        {% endfor %}
+        {% for error in order_form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+</body>
+
+</html>

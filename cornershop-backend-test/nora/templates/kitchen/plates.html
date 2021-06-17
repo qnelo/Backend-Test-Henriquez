@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" />
+    <title>Dish List</title>
+    <style>
+        form {
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h3>Dish List</h3>
+
+        <table class="table table-bordered" cellpadding="5" cellspacing="3">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
+            {% for plate in plates %}
+            <tr>
+                <td>{{plate.name}}</td>
+                <td>{{plate.description}}</td>
+                <td>
+
+                    <form method="get" action="{% url 'edit_plate' plate.id %}">{%csrf_token%}
+                        <input class="btn btn-primary" type="submit" value="Edit"></input>
+                    </form>
+
+                    <form method="post" action="{% url 'delete_plate' plate.id %}">{%csrf_token%}
+                        <input class="btn btn-primary" type="submit" value="Delete"></input>
+                    </form>
+
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="container">
+        <br>
+        <h3>Add Dish</h3>
+        <form method="post" action=".">
+            {%csrf_token%}
+            <table class="table table-bordered" cellpadding="5" cellspacing="3">
+                {{form.as_table}}
+                <tr>
+                    <td colspan="2">
+                        <button class="btn btn-primary">Submit</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div class="container">
+        <br>
+        <h4><a href="{% url 'index' %}">Back to menus</a></h4>
+    </div>
+</body>
+
+</html>

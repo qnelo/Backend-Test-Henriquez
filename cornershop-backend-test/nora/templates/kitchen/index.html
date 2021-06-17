@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" />
+    <title>Menu List</title>
+    <style>
+        form {
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        {% if menu_list %}
+        <h3>List of daily menus</h3>
+        <table class="table table-bordered" cellpadding="5" cellspacing="3">
+            <tr>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+            {% for menu in menu_list %}
+            <tr>
+                <td><a href="{% url 'daily_menu' menu.date %}">{{ menu.date | date:"Y-m-d" }}</a></td>
+                <td>
+                    <form method="post" action="{% url 'delete_menu' menu.pk %}">{%csrf_token%}
+                        <input class="btn btn-primary" type="submit" value="Delete"></input>
+                    </form>
+                    <form method="get" action="{% url 'daily_menu' menu.date %}">
+                        <input class="btn btn-primary" type="submit" value="Edit"></input>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No menus are available.</p>
+        {% endif %}
+    </div>
+
+    <div class="container">
+        <br>
+        <h4>Add New Menu</h4>
+        <form method="post" action=".">
+            {%csrf_token%}
+            <table class="table table-bordered" cellpadding="5" cellspacing="3">
+                {{form.as_table}}
+                <tr>
+                    <td colspan="2">
+                        <button class="btn btn-primary">Submit</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        {% if form.errors %}
+        {% for field in form %}
+        {% for error in field.errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+        {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+    <div class="container">
+        <br>
+        <h4><a href="{% url 'plate' %}">Dish management</a></h4>
+        <br>
+        <h4><a href="{% url 'client' %}">Clients management</a></h4>
+        <br>
+        <h4><a href="/accounts/logout/">Logout</a></h4>
+    </div>
+</body>
+
+</html>

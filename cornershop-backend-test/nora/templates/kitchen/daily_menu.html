@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" />
+    <title>List of {{menu.date | date:"M D d"}} meal plates</title>
+</head>
+
+<body>
+    <div class="container">
+        <h4>Edit Menu</h4>
+        <form method="post" action=".">
+            {%csrf_token%}
+            <table class="table table-bordered" cellpadding="5" cellspacing="3">
+                {{menu.as_table}}
+                <tr>
+                    <td colspan="2">
+                        <button class="btn btn-primary">Edit Menu</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        {% if menu.errors %}
+        {% for field in menu %}
+        {% for error in field.errors %}
+        <div class="alert alert-danger">
+            <strong>err{{ error|escape }}</strong>
+        </div>
+        {% endfor %}
+        {% endfor %}
+        {% for error in menu.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>non{{ error|escape }}</strong>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+    <div class="container">
+        {% if orders %}
+        <h3>Customer choices</h3>
+        <table class="table table-bordered" cellpadding="5" cellspacing="3">
+            <tr>
+                <th>Client</th>
+                <th>Plate</th>
+                <th>Customization</th>
+            </tr>
+            {% for order in orders %}
+            <tr>
+                <td>{{order.client.name}}</td>
+                <td>{{order.plate.name}}</td>
+                <td>{{order.customization}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No Customer choices are available.</p>
+        {% endif %}
+    </div>
+    <div class="container">
+        <br>
+        <h4><a href="{% url 'index' %}">Back to menus</a></h4>
+    </div>
+</body>
+
+</html>

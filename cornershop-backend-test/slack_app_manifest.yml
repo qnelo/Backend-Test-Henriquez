@@ -1,0 +1,30 @@
+_metadata:
+  major_version: 1
+  minor_version: 1
+display_information:
+  name: Nora
+  description: The cook of the rich lunches
+  background_color: "#004dff"
+  long_description: "the cook of the rich lunches\r
+    \r
+    Each day I send a menu so that people can choose from the options I have.
+    \r
+    When you click on the link I send you, you will be able to select the dish you want and write down any special request."
+features:
+  app_home:
+    home_tab_enabled: true
+    messages_tab_enabled: true
+    messages_tab_read_only_enabled: false
+  bot_user:
+    display_name: Nora
+    always_online: true
+oauth_config:
+  redirect_urls:
+    - https://slack.com/oauth/authorize
+  scopes:
+    bot:
+      - chat:write
+settings:
+  org_deploy_enabled: false
+  socket_mode_enabled: false
+  is_hosted: false
