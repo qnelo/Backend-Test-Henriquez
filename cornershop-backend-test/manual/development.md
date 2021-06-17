@@ -8,7 +8,7 @@ It was chosen to have only one recurring task, as it was considered a better opt
 
 ## About Django
 
-We chose to develop the application without using django rest framework for three reasons:
+I chose to develop the application without using django rest framework for three reasons:
 
  - Since when asked if it should be used, it was specified that it is indistinct to use DRF or Django.
  - I had never worked with Django without using DRF, so it was a good learning option.
@@ -17,6 +17,16 @@ We chose to develop the application without using django rest framework for thre
 ## About the creation of the application administrator user
 
 It was left out of the scope of the challenge the creation or maintenance of system users, therefore each new user must be created using a python shell.
+
+## About URL customization
+
+To change the url with which slack sends the daily reminders, you must configure the `SERVER_URL` environment variable
+
+```yaml
+- SERVER_URL=http://localhost:8000
+```
+
+Inside the file [docker-compose.yml](../docker-compose.yml) in the `backend` service
 
 ---
 [Back](../README.md)

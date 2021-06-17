@@ -59,5 +59,7 @@ Each user will receive a unique link specific to that particular day. Each time 
 
 ![Main Menu](./images/slack_message.png)
 
+_Note:_ In the image that shows the slack message appears a URL (http://localhost:8000) testing in local environment, to change the url review the [development considerations](./development.md).
+
 ---
 [Back](../README.md)
