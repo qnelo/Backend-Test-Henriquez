@@ -15,7 +15,14 @@ from .models import Menu, Order, Plate
 
 class IndexView(LoginRequiredMixin, View):
     def get(self, request):
+        """Obtain all menus
 
+        Args:
+            request (HttpRequest): A get request
+
+        Returns:
+            HttpRequest: html view with all menus
+        """
         menu_list = Menu.objects.all()[:15]
         add_menu = MenuForm()
         return render(
@@ -23,6 +30,14 @@ class IndexView(LoginRequiredMixin, View):
         )
 
     def post(self, request):
+        """Create a new Menu
+
+        Args:
+            request (HttpRequest): A post request
+
+        Returns:
+            HttpRequest: redirect to menu list
+        """
         add_menu = MenuForm(request.POST)
         if add_menu.is_valid():
             add_menu.save()
@@ -36,6 +51,14 @@ class IndexView(LoginRequiredMixin, View):
 
 class DailyMenuView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
+        """Obtain a Menu
+
+        Args:
+            request (HttpRequest): A get request
+
+        Returns:
+            HttpRequest: html view with a menu
+        """
 
         try:
             menu = get_object_or_404(Menu, date=kwargs["date"])
@@ -50,6 +73,14 @@ class DailyMenuView(LoginRequiredMixin, View):
         )
 
     def post(self, request, *args, **kwargs):
+        """Modify a Menu
+
+        Args:
+            request (HttpRequest): A post request
+
+        Returns:
+            HttpRequest: redirect to menu list
+        """
 
         try:
             menu = get_object_or_404(Menu, date=kwargs["date"])
@@ -72,6 +103,14 @@ class DeleteMenuView(LoginRequiredMixin, DeleteView):
 
 class PlateView(LoginRequiredMixin, View):
     def get(self, request):
+        """Obtain all plates
+
+        Args:
+            request (HttpRequest): A get request
+
+        Returns:
+            HttpRequest: html view with all plates
+        """
         plates = Plate.objects.all()
         add_plate = PlateForm()
         return render(
@@ -79,6 +118,14 @@ class PlateView(LoginRequiredMixin, View):
         )
 
     def post(self, request):
+        """Create a new Plate
+
+        Args:
+            request (HttpRequest): A post request
+
+        Returns:
+            HttpRequest: redirect to plate list
+        """
         add_plate = PlateForm(request.POST)
         if add_plate.is_valid():
             add_plate.save()
@@ -98,11 +145,27 @@ class DeletePlateView(LoginRequiredMixin, DeleteView):
 
 class EditPlateView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
+        """Obtain a plate
+
+        Args:
+            request (HttpRequest): A get request
+
+        Returns:
+            HttpRequest: html view with a plate
+        """
         plate = Plate.objects.get(pk=kwargs["pk"])
         add_plate = PlateForm(instance=plate)
         return render(request, "kitchen/edit_plates.html", {"form": add_plate})
 
     def post(self, request, *args, **kwargs):
+        """Modify a Plate
+
+        Args:
+            request (HttpRequest): A post request
+
+        Returns:
+            HttpRequest: redirect to plate list
+        """
         try:
             plate = Plate.objects.get(pk=kwargs["pk"])
             edited_plate = PlateForm(request.POST, instance=plate)
@@ -124,7 +187,14 @@ class ClientMenuView(View):
     today11am = cl_now.replace(hour=11, minute=00, second=0, microsecond=0)
 
     def get(self, request, *args, **kwargs):
+        """Obtain a client order available only for the order of the day only before 11am CLT
 
+        Args:
+            request (HttpRequest): A get request
+
+        Returns:
+            HttpRequest: html view with the client order
+        """
         try:
             order = get_object_or_404(Order, uuid=uuid.UUID(str(kwargs["order_id"])))
             if self.cl_now > self.today11am or self.cl_now.date() != order.menu.date:
@@ -141,6 +211,14 @@ class ClientMenuView(View):
         )
 
     def post(self, request, *args, **kwargs):
+        """Obtain a client order available only for the order of the day only before 11am CLT
+
+        Args:
+            request (HttpRequest): A post request
+
+        Returns:
+            HttpRequest: redirect to the client order
+        """
 
         try:
             print(kwargs["order_id"])

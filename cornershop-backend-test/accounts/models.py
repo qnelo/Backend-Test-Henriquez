@@ -2,14 +2,10 @@ from django.db import models
 
 
 class Client(models.Model):
-    """
-    This is a class to represent a clients.
+    """Clients Model
 
-
-    Attributes:
-        name (str): Name of the person.
-        country_code (str): ISO 3166 country code `Alpha-2 code`.
-        slack_id (str): Slack user id in the workspace, example `U024AAE5351`.
+    Args:
+        models (Model): Basic information about clients
     """
 
     name = models.CharField(max_length=50)

@@ -11,13 +11,14 @@ from .models import Client
 
 
 class ClientView(LoginRequiredMixin, View):
-    """
-    This is a class to represent a clients.
-    """
-
     def get(self, request, *args, **kwargs):
-        """
-        This is a class to represent a clients.
+        """Obtain all clients
+
+        Args:
+            request (HttpRequest): A get request
+
+        Returns:
+            HttpRequest: html view with all clients
         """
         clients = Client.objects.all()
         add_client = ClientForm()
@@ -26,6 +27,14 @@ class ClientView(LoginRequiredMixin, View):
         )
 
     def post(self, request, *args, **kwargs):
+        """Create a new Client
+
+        Args:
+            request (HttpRequest): A post request
+
+        Returns:
+            HttpRequest: redirect to client list
+        """
         add_client = ClientForm(request.POST)
         if add_client.is_valid():
             add_client.save()
@@ -40,11 +49,27 @@ class DeleteClientView(LoginRequiredMixin, DeleteView):
 
 class EditClientView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
+        """Obtain a client
+
+        Args:
+            request (HttpRequest): A get request
+
+        Returns:
+            HttpRequest: html view with a client
+        """
         client = Client.objects.get(pk=kwargs["pk"])
         add_client = ClientForm(instance=client)
         return render(request, "account/edit_clients.html", {"form": add_client})
 
     def post(self, request, *args, **kwargs):
+        """Modify a Client
+
+        Args:
+            request (HttpRequest): A post request
+
+        Returns:
+            HttpRequest: redirect to client list
+        """
         client = Client.objects.get(pk=kwargs["pk"])
         edited_client = ClientForm(request.POST, instance=client)
         if edited_client.is_valid():
@@ -54,12 +79,28 @@ class EditClientView(LoginRequiredMixin, View):
 
 class IndexView(View):
     def get(self, request, *args, **kwargs):
+        """Login site
+
+        Args:
+            request (HttpRequest): A get request
+
+        Returns:
+            HttpRequest: html view with login site
+        """
         form = AuthenticationForm()
         return render(
             request=request, template_name="login/index.html", context={"form": form}
         )
 
     def post(self, request, *args, **kwargs):
+        """Login site
+
+        Args:
+            request (HttpRequest): A post request
+
+        Returns:
+            HttpRequest: redirect to a main menu
+        """
         form = AuthenticationForm(request=request, data=request.POST)
         if form.is_valid():
             username = form.cleaned_data.get("username")
@@ -81,6 +122,14 @@ class IndexView(View):
 
 class LogoutView(View):
     def get(self, request, *args, **kwargs):
+        """Logout site
+
+        Args:
+            request (HttpRequest): A get request
+
+        Returns:
+            HttpRequest: html view with login site
+        """
         logout(request)
         messages.info(request, "Logged out successfully!")
         return redirect("login")

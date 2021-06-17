@@ -4,6 +4,15 @@ import requests
 
 
 def send_message(slack_user_id, message):
+    """Generate a post request to the slack API to send a message to a user
+
+    Args:
+        slack_user_id (str): slack user id
+        message (string): message to a client with the menu reminder
+
+    Returns:
+        str: slack API response
+    """
 
     url = "https://slack.com/api/chat.postMessage?channel={}&text={}".format(
         slack_user_id, message
@@ -18,6 +27,14 @@ def send_message(slack_user_id, message):
 
 
 def generate_message(order):
+    """Generate the message to a user
+
+    Args:
+        order (Model): the client order Model
+
+    Returns:
+        str: The message that the client will view in slack
+    """
 
     plates = order.menu.plates.all()
     menu_list = ""
